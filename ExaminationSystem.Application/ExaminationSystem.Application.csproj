@@ -7,7 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExaminationSystem.Domain\ExaminationSystem.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+    <Folder Include="Contracts\" />
+    <Folder Include="Common\" />
+    <Folder Include="Features\Auth\Register\" />
+    <Folder Include="Features\Diplomas\" />
+    <Folder Include="Features\Attempts\" />
+    <Folder Include="Features\Analytics\" />
+    <Folder Include="Features\Quizzes\" />
+    <Folder Include="Features\Students\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="DependencyInjection\" />
   </ItemGroup>
 
 </Project>
