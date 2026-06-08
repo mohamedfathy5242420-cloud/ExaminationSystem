@@ -1,4 +1,4 @@
-﻿using ExaminationSystem.Domain.Entities.Learning;
+using ExaminationSystem.Domain.Entities.Learning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,12 +13,23 @@ public class DiplomaConfiguration : IEntityTypeConfiguration<Diploma>
             .IsRequired();
 
         builder.Property(x => x.Description)
-            .HasMaxLength(2000);
+            .HasMaxLength(2000)
+            .IsRequired();
 
         builder.HasMany(x => x.Quizzes)
             .WithOne(x => x.Diploma)
             .HasForeignKey(x => x.DiplomaId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Enrollments)
+            .WithOne(x => x.Diploma)
+            .HasForeignKey(x => x.DiplomaId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.Instructor)
+            .WithMany(x => x.Diplomas)
+            .HasForeignKey(x => x.InstructorId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.Title);
     }

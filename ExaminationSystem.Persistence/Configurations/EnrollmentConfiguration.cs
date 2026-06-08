@@ -1,4 +1,4 @@
-﻿using ExaminationSystem.Domain.Entities.Learning;
+using ExaminationSystem.Domain.Entities.Learning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +17,7 @@ public class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
             .HasPrecision(5, 2);
 
         builder.HasOne(x => x.Diploma)
-            .WithMany()
+            .WithMany(x => x.Enrollments)
             .HasForeignKey(x => x.DiplomaId)
             .OnDelete(DeleteBehavior.Cascade);
 

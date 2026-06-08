@@ -7,16 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExaminationSystem.Application\ExaminationSystem.Application.csproj" />
     <ProjectReference Include="..\ExaminationSystem.Domain\ExaminationSystem.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Identity\" />
-    <Folder Include="Email\" />
+    <Folder Include="Events\" />
     <Folder Include="Jwt\" />
+    <Folder Include="Orchestrators\" />
     <Folder Include="DependencyInjection\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

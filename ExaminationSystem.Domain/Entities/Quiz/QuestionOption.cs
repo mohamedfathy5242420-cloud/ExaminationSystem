@@ -1,20 +1,14 @@
-﻿using ExaminationSystem.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ExaminationSystem.Domain.Common;
 
-namespace ExaminationSystem.Domain.Entities.Quiz
+namespace ExaminationSystem.Domain.Entities.Quiz;
+
+public class QuestionOption : BaseEntity
 {
-    public class QuestionOption : BaseEntity
-    {
-        public Guid QuestionId { get; set; }
+    public Guid QuestionId { get; set; }
 
-        public string Text { get; set; }
+    public string Text { get; set; } = default!;
 
-        public bool IsCorrect { get; set; }
+    public bool IsCorrect { get; set; }
 
-        public Question Question { get; set; }
-    }
+    public Question Question { get; set; } = default!;
 }

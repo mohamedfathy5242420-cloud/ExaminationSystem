@@ -1,3 +1,5 @@
+using ExaminationSystem.Application;
+using ExaminationSystem.Infrastructure;
 using ExaminationSystem.Persistence;
 namespace ExaminationSystem.API
 {
@@ -13,7 +15,11 @@ namespace ExaminationSystem.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
+            builder.Services.AddApplication();
             builder.Services.AddPersistence(builder.Configuration);
+            builder.Services.AddInfrastructure(builder.Configuration);
 
             var app = builder.Build();
 
@@ -26,6 +32,7 @@ namespace ExaminationSystem.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

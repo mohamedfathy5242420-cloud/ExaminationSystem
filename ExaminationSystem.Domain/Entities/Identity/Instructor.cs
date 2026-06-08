@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ExaminationSystem.Domain.Entities.Learning;
 
-namespace ExaminationSystem.Domain.Entities.Identity
+namespace ExaminationSystem.Domain.Entities.Identity;
+
+public class Instructor : User
 {
-    public class Instructor : User
-    {
-    }
+    public ICollection<Diploma> Diplomas { get; set; } = new List<Diploma>();
 }

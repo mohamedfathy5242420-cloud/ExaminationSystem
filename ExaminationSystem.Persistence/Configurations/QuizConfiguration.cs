@@ -1,12 +1,12 @@
-﻿using ExaminationSystem.Domain.Entities.Quiz;
+using ExaminationSystem.Domain.Entities.Quiz;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ExaminationSystem.Persistence.Configurations.Quiz;
 
-public class QuizConfiguration : IEntityTypeConfiguration<Quizes>
+public class QuizConfiguration : IEntityTypeConfiguration<Domain.Entities.Quiz.Quiz>
 {
-    public void Configure(EntityTypeBuilder<Quizes> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.Quiz.Quiz> builder)
     {
         builder.Property(x => x.Title)
             .HasMaxLength(200)
@@ -25,6 +25,11 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quizes>
             .WithOne(x => x.Quiz)
             .HasForeignKey(x => x.QuizId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Attempts)
+            .WithOne(x => x.Quiz)
+            .HasForeignKey(x => x.QuizId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.DiplomaId);
     }

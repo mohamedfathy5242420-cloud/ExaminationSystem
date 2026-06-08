@@ -1,23 +1,22 @@
-﻿using ExaminationSystem.Domain.Common;
-using ExaminationSystem.Domain.Entities.Quiz;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ExaminationSystem.Domain.Common;
+using ExaminationSystem.Domain.Entities.Identity;
+using QuizEntity = ExaminationSystem.Domain.Entities.Quiz.Quiz;
 
-namespace ExaminationSystem.Domain.Entities.Learning
+namespace ExaminationSystem.Domain.Entities.Learning;
+
+public class Diploma : BaseEntity, IAggregateRoot
 {
-    public class Diploma : BaseEntity, IAggregateRoot
-    {
-        public string Title { get; set; }
+    public string Title { get; set; } = default!;
 
-        public string Description { get; set; }
+    public string Description { get; set; } = default!;
 
-        public bool IsPublished { get; set; }
+    public bool IsPublished { get; set; }
 
-        public Guid InstructorId { get; set; }
+    public Guid InstructorId { get; set; }
 
-        public ICollection<Quizes> Quizzes { get; set; }
-    }
+    public Instructor Instructor { get; set; } = default!;
+
+    public ICollection<QuizEntity> Quizzes { get; set; } = new List<QuizEntity>();
+
+    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 }

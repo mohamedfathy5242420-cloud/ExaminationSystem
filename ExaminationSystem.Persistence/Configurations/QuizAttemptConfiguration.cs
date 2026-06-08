@@ -1,4 +1,4 @@
-﻿using ExaminationSystem.Domain.Entities.Attempt;
+using ExaminationSystem.Domain.Entities.Attempt;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,8 +17,13 @@ public class QuizAttemptConfiguration : IEntityTypeConfiguration<QuizAttempt>
         builder.HasIndex(x => new { x.StudentId, x.QuizId });
 
         builder.HasOne(x => x.Quiz)
-            .WithMany()
+            .WithMany(x => x.Attempts)
             .HasForeignKey(x => x.QuizId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Student)
+            .WithMany(x => x.QuizAttempts)
+            .HasForeignKey(x => x.StudentId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(x => x.Answers)

@@ -51,6 +51,10 @@ namespace ExaminationSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("SelectedOptionId");
+
                     b.HasIndex("AttemptId", "QuestionId")
                         .IsUnique();
 
@@ -239,11 +243,6 @@ namespace ExaminationSystem.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -256,9 +255,7 @@ namespace ExaminationSystem.Persistence.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator<string>("UserType").HasValue("User");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Learning.Diploma", b =>
@@ -293,6 +290,8 @@ namespace ExaminationSystem.Persistence.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstructorId");
 
                     b.HasIndex("Title");
 
@@ -406,7 +405,7 @@ namespace ExaminationSystem.Persistence.Migrations
                     b.ToTable("QuestionOptions");
                 });
 
-            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Quiz.Quizes", b =>
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Quiz.Quiz", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -583,21 +582,21 @@ namespace ExaminationSystem.Persistence.Migrations
                 {
                     b.HasBaseType("ExaminationSystem.Domain.Entities.Identity.User");
 
-                    b.HasDiscriminator().HasValue("Admin");
+                    b.ToTable("Admins", (string)null);
                 });
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.Instructor", b =>
                 {
                     b.HasBaseType("ExaminationSystem.Domain.Entities.Identity.User");
 
-                    b.HasDiscriminator().HasValue("Instructor");
+                    b.ToTable("Instructors", (string)null);
                 });
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.Student", b =>
                 {
                     b.HasBaseType("ExaminationSystem.Domain.Entities.Identity.User");
 
-                    b.HasDiscriminator().HasValue("Student");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Attempt.AttemptAnswer", b =>
@@ -608,18 +607,41 @@ namespace ExaminationSystem.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ExaminationSystem.Domain.Entities.Quiz.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ExaminationSystem.Domain.Entities.Quiz.QuestionOption", "SelectedOption")
+                        .WithMany()
+                        .HasForeignKey("SelectedOptionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Attempt");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("SelectedOption");
                 });
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Attempt.QuizAttempt", b =>
                 {
-                    b.HasOne("ExaminationSystem.Domain.Entities.Quiz.Quizes", "Quiz")
-                        .WithMany()
+                    b.HasOne("ExaminationSystem.Domain.Entities.Quiz.Quiz", "Quiz")
+                        .WithMany("Attempts")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ExaminationSystem.Domain.Entities.Identity.Student", "Student")
+                        .WithMany("QuizAttempts")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Quiz");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.OTP", b =>
@@ -644,10 +666,21 @@ namespace ExaminationSystem.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Learning.Diploma", b =>
+                {
+                    b.HasOne("ExaminationSystem.Domain.Entities.Identity.Instructor", "Instructor")
+                        .WithMany("Diplomas")
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Instructor");
+                });
+
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Learning.Enrollment", b =>
                 {
                     b.HasOne("ExaminationSystem.Domain.Entities.Learning.Diploma", "Diploma")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("DiplomaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -665,7 +698,7 @@ namespace ExaminationSystem.Persistence.Migrations
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Quiz.Question", b =>
                 {
-                    b.HasOne("ExaminationSystem.Domain.Entities.Quiz.Quizes", "Quiz")
+                    b.HasOne("ExaminationSystem.Domain.Entities.Quiz.Quiz", "Quiz")
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -685,7 +718,7 @@ namespace ExaminationSystem.Persistence.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Quiz.Quizes", b =>
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Quiz.Quiz", b =>
                 {
                     b.HasOne("ExaminationSystem.Domain.Entities.Learning.Diploma", "Diploma")
                         .WithMany("Quizzes")
@@ -747,6 +780,33 @@ namespace ExaminationSystem.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.Admin", b =>
+                {
+                    b.HasOne("ExaminationSystem.Domain.Entities.Identity.User", null)
+                        .WithOne()
+                        .HasForeignKey("ExaminationSystem.Domain.Entities.Identity.Admin", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.Instructor", b =>
+                {
+                    b.HasOne("ExaminationSystem.Domain.Entities.Identity.User", null)
+                        .WithOne()
+                        .HasForeignKey("ExaminationSystem.Domain.Entities.Identity.Instructor", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.Student", b =>
+                {
+                    b.HasOne("ExaminationSystem.Domain.Entities.Identity.User", null)
+                        .WithOne()
+                        .HasForeignKey("ExaminationSystem.Domain.Entities.Identity.Student", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Attempt.QuizAttempt", b =>
                 {
                     b.Navigation("Answers");
@@ -761,6 +821,8 @@ namespace ExaminationSystem.Persistence.Migrations
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Learning.Diploma", b =>
                 {
+                    b.Navigation("Enrollments");
+
                     b.Navigation("Quizzes");
                 });
 
@@ -769,14 +831,23 @@ namespace ExaminationSystem.Persistence.Migrations
                     b.Navigation("Options");
                 });
 
-            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Quiz.Quizes", b =>
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Quiz.Quiz", b =>
                 {
+                    b.Navigation("Attempts");
+
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.Instructor", b =>
+                {
+                    b.Navigation("Diplomas");
                 });
 
             modelBuilder.Entity("ExaminationSystem.Domain.Entities.Identity.Student", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("QuizAttempts");
                 });
 #pragma warning restore 612, 618
         }
