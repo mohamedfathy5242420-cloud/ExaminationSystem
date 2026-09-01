@@ -15,6 +15,8 @@ using ExaminationSystem.Application.Features.Auth.RefreshToken;
 using ExaminationSystem.Application.Features.Auth.ResetPassword;
 using ExaminationSystem.Application.Features.Auth.VerifyAccount;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
+using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizHistory;
+using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizResult;
 using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz;
 using ExaminationSystem.Application.Features.Student.Quizzes.SubmitQuiz;
 using ExaminationSystem.Application.Interfaces.Orchestrators;
@@ -43,6 +45,8 @@ public static class InfrastructureRegistration
         services.AddScoped<IDeleteDiplomaOrchestrator, DeleteDiplomaOrchestrator>();
         services.AddScoped<IDeleteQuizOrchestrator, DeleteQuizOrchestrator>();
         services.AddScoped<IForgotPasswordOrchestrator, ForgotPasswordOrchestrator>();
+        services.AddScoped<IGetQuizHistoryOrchestrator, GetQuizHistoryOrchestrator>();
+        services.AddScoped<IGetQuizResultOrchestrator, GetQuizResultOrchestrator>();
         services.AddScoped<IRegisterUserOrchestrator, RegisterUserOrchestrator>();
         services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
         services.AddScoped<IRefreshTokenOrchestrator, RefreshTokenOrchestrator>();

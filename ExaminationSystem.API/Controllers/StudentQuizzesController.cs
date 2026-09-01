@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion.Requests;
+using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizHistory;
+using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizResult;
 using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz;
 using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz.Requests;
 using ExaminationSystem.Application.Features.Student.Quizzes.SubmitQuiz;
@@ -32,6 +34,55 @@ public class StudentQuizzesController : ControllerBase
         _answerQuestionValidator = answerQuestionValidator;
         _startQuizValidator = startQuizValidator;
         _submitQuizValidator = submitQuizValidator;
+    }
+
+    [HttpGet("attempts/{attemptId:guid}/result")]
+    public async Task<IActionResult> GetQuizResult(
+        Guid attemptId,
+        CancellationToken cancellationToken)
+    {
+        var studentIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        var userType = User.FindFirst("user_type")?.Value;
+
+        if (!Guid.TryParse(studentIdClaim, out var studentId) || userType != "Student")
+        {
+            return Forbid();
+        }
+
+        var result = await _mediator.Send(
+            new GetQuizResultQuery(studentId, attemptId),
+            cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return BadRequest(new
+            {
+                error = result.Error
+            });
+        }
+
+        return Ok(result.Value);
+    }
+
+    [HttpGet("history")]
+    public async Task<IActionResult> GetQuizHistory(
+        [FromQuery] Guid? quizId,
+        [FromQuery] Guid? diplomaId,
+        CancellationToken cancellationToken)
+    {
+        var studentIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        var userType = User.FindFirst("user_type")?.Value;
+
+        if (!Guid.TryParse(studentIdClaim, out var studentId) || userType != "Student")
+        {
+            return Forbid();
+        }
+
+        var result = await _mediator.Send(
+            new GetQuizHistoryQuery(studentId, quizId, diplomaId),
+            cancellationToken);
+
+        return Ok(result.Value);
     }
 
     [HttpPost("start")]
