@@ -6,6 +6,8 @@ using ExaminationSystem.Application.Features.Admin.Analytics.GetPerformanceAnaly
 using ExaminationSystem.Application.Features.Admin.Monitoring.GetStudentAttemptDetails;
 using ExaminationSystem.Application.Features.Admin.Monitoring.GetStudentAttempts;
 using ExaminationSystem.Application.Features.Admin.Questions.CreateQuestion;
+using ExaminationSystem.Application.Features.Admin.Questions.DeleteQuestion;
+using ExaminationSystem.Application.Features.Admin.Questions.UpdateQuestion;
 using ExaminationSystem.Application.Features.Admin.Quizzes.CreateQuiz;
 using ExaminationSystem.Application.Features.Admin.Quizzes.DeleteQuiz;
 using ExaminationSystem.Application.Features.Admin.Quizzes.PublishQuiz;
@@ -52,6 +54,7 @@ public static class InfrastructureRegistration
         services.AddScoped<ICreateQuestionOrchestrator, CreateQuestionOrchestrator>();
         services.AddScoped<ICreateQuizOrchestrator, CreateQuizOrchestrator>();
         services.AddScoped<IDeleteDiplomaOrchestrator, DeleteDiplomaOrchestrator>();
+        services.AddScoped<IDeleteQuestionOrchestrator, DeleteQuestionOrchestrator>();
         services.AddScoped<IDeleteQuizOrchestrator, DeleteQuizOrchestrator>();
         services.AddScoped<IForgotPasswordOrchestrator, ForgotPasswordOrchestrator>();
         services.AddScoped<IEnrollInDiplomaOrchestrator, EnrollInDiplomaOrchestrator>();
@@ -71,6 +74,7 @@ public static class InfrastructureRegistration
         services.AddScoped<ISubmitQuizOrchestrator, SubmitQuizOrchestrator>();
         services.AddScoped<IPublishQuizOrchestrator, PublishQuizOrchestrator>();
         services.AddScoped<IUpdateDiplomaOrchestrator, UpdateDiplomaOrchestrator>();
+        services.AddScoped<IUpdateQuestionOrchestrator, UpdateQuestionOrchestrator>();
         services.AddScoped<IUpdateQuizOrchestrator, UpdateQuizOrchestrator>();
         services.AddScoped<IUnpublishQuizOrchestrator, UnpublishQuizOrchestrator>();
         services.AddScoped<IVerifyAccountOrchestrator, VerifyAccountOrchestrator>();
@@ -79,6 +83,8 @@ public static class InfrastructureRegistration
         services.AddScoped<IEventHandler<DiplomaCreatedEvent>, DiplomaCreatedEventHandler>();
         services.AddScoped<IEventHandler<QuestionAnsweredEvent>, QuestionAnsweredEventHandler>();
         services.AddScoped<IEventHandler<QuestionCreatedEvent>, QuestionCreatedEventHandler>();
+        services.AddScoped<IEventHandler<QuestionDeletedEvent>, QuestionDeletedEventHandler>();
+        services.AddScoped<IEventHandler<QuestionUpdatedEvent>, QuestionUpdatedEventHandler>();
         services.AddScoped<IEventHandler<QuizSubmittedEvent>, QuizSubmittedEventHandler>();
         services.AddScoped<IEventHandler<QuizTimerExpiredEvent>, QuizTimerExpiredEventHandler>();
         services.AddScoped<IEventHandler<StudentEnrolledInDiplomaEvent>, StudentEnrolledInDiplomaEventHandler>();
