@@ -1,3 +1,4 @@
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Admin.Analytics.GetPerformanceAnalytics;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.AdminOnly)]
 [Route("api/admin/analytics")]
 public class AdminAnalyticsController : ControllerBase
 {

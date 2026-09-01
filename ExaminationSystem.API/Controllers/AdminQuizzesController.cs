@@ -1,3 +1,4 @@
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Admin.Quizzes.CreateQuiz;
 using ExaminationSystem.Application.Features.Admin.Quizzes.CreateQuiz.Requests;
 using ExaminationSystem.Application.Features.Admin.Quizzes.DeleteQuiz;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.AdminOnly)]
 [Route("api/admin/quizzes")]
 public class AdminQuizzesController : ControllerBase
 {

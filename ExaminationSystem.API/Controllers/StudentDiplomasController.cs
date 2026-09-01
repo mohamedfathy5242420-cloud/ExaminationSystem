@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Student.Diplomas.BrowseDiplomas;
 using ExaminationSystem.Application.Features.Student.Diplomas.EnrollInDiploma;
 using ExaminationSystem.Application.Features.Student.Diplomas.EnrollInDiploma.Requests;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.StudentOnly)]
 [Route("api/student/diplomas")]
 public class StudentDiplomasController : ControllerBase
 {

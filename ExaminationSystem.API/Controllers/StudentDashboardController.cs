@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Student.Dashboard.GetStudentDashboard;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.StudentOnly)]
 [Route("api/student/dashboard")]
 public class StudentDashboardController : ControllerBase
 {

@@ -1,3 +1,4 @@
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Admin.Questions.CreateQuestion;
 using ExaminationSystem.Application.Features.Admin.Questions.CreateQuestion.Requests;
 using ExaminationSystem.Application.Features.Admin.Questions.DeleteQuestion;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.AdminOnly)]
 [Route("api/admin/questions")]
 public class AdminQuestionsController : ControllerBase
 {

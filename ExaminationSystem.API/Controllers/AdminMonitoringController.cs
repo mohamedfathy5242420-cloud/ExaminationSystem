@@ -1,3 +1,4 @@
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Admin.Monitoring.GetStudentAttemptDetails;
 using ExaminationSystem.Application.Features.Admin.Monitoring.GetStudentAttempts;
 using MediatR;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.AdminOnly)]
 [Route("api/admin/monitoring")]
 public class AdminMonitoringController : ControllerBase
 {

@@ -1,3 +1,4 @@
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Admin.Diplomas.CreateDiploma;
 using ExaminationSystem.Application.Features.Admin.Diplomas.CreateDiploma.Requests;
 using ExaminationSystem.Application.Features.Admin.Diplomas.DeleteDiploma;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.AdminOnly)]
 [Route("api/admin/diplomas")]
 public class AdminDiplomasController : ControllerBase
 {

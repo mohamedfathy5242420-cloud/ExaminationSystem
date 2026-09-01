@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion.Requests;
 using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizHistory;
@@ -16,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExaminationSystem.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = UserTypePolicies.StudentOnly)]
 [Route("api/student/quizzes")]
 public class StudentQuizzesController : ControllerBase
 {

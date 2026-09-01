@@ -1,4 +1,5 @@
 using System.Text;
+using ExaminationSystem.API.Authorization;
 using ExaminationSystem.Application;
 using ExaminationSystem.Infrastructure;
 using ExaminationSystem.Persistence;
@@ -37,7 +38,20 @@ namespace ExaminationSystem.API
                     };
                 });
 
-            builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    UserTypePolicies.AdminOnly,
+                    policy => policy.RequireClaim("user_type", "Admin"));
+
+                options.AddPolicy(
+                    UserTypePolicies.StudentOnly,
+                    policy => policy.RequireClaim("user_type", "Student"));
+
+                options.AddPolicy(
+                    UserTypePolicies.InstructorOnly,
+                    policy => policy.RequireClaim("user_type", "Instructor"));
+            });
             builder.Services.AddApplication();
             builder.Services.AddPersistence(builder.Configuration);
             builder.Services.AddInfrastructure(builder.Configuration);
