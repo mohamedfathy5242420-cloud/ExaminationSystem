@@ -1,6 +1,10 @@
+using System.Text;
 using ExaminationSystem.Application;
 using ExaminationSystem.Infrastructure;
 using ExaminationSystem.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 namespace ExaminationSystem.API
 {
     public class Program
@@ -9,13 +13,30 @@ namespace ExaminationSystem.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddAuthentication();
+
+            var jwtSection = builder.Configuration.GetSection("Jwt");
+            var jwtSecret = jwtSection["Secret"]!;
+
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = jwtSection["Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = jwtSection["Audience"],
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
             builder.Services.AddAuthorization();
             builder.Services.AddApplication();
             builder.Services.AddPersistence(builder.Configuration);
@@ -23,7 +44,6 @@ namespace ExaminationSystem.API
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -34,7 +54,6 @@ namespace ExaminationSystem.API
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

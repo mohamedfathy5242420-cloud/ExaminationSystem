@@ -55,6 +55,7 @@ public class RegisterUserOrchestrator : IRegisterUserOrchestrator
         {
             UserId = user.Id,
             Code = otpCode,
+            Purpose = OtpPurpose.AccountVerification,
             ExpiryDate = DateTime.UtcNow.AddMinutes(10),
             IsUsed = false
         };

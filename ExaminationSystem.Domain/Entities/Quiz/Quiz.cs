@@ -16,6 +16,8 @@ public class Quiz : BaseEntity, IAggregateRoot
 
     public int MaxAttempts { get; set; }
 
+    public string Instructions { get; set; } = default!;
+
     public bool IsPublished { get; set; }
 
     public Diploma Diploma { get; set; } = default!;

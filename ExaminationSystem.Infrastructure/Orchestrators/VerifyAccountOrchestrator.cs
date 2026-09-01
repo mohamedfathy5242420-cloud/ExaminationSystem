@@ -50,7 +50,9 @@ public class VerifyAccountOrchestrator : IVerifyAccountOrchestrator
 
         var otp = _unitOfWork.Repository<OTP>()
             .Query()
-            .Where(x => x.UserId == user.Id && !x.IsUsed)
+            .Where(x => x.UserId == user.Id &&
+                        x.Purpose == OtpPurpose.AccountVerification &&
+                        !x.IsUsed)
             .OrderByDescending(x => x.CreatedOnUtc)
             .FirstOrDefault();
 
