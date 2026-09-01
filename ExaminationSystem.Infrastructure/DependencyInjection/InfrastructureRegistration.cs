@@ -17,6 +17,7 @@ using ExaminationSystem.Application.Features.Auth.VerifyAccount;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
 using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizHistory;
 using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizResult;
+using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizTimer;
 using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz;
 using ExaminationSystem.Application.Features.Student.Quizzes.SubmitQuiz;
 using ExaminationSystem.Application.Interfaces.Orchestrators;
@@ -47,6 +48,7 @@ public static class InfrastructureRegistration
         services.AddScoped<IForgotPasswordOrchestrator, ForgotPasswordOrchestrator>();
         services.AddScoped<IGetQuizHistoryOrchestrator, GetQuizHistoryOrchestrator>();
         services.AddScoped<IGetQuizResultOrchestrator, GetQuizResultOrchestrator>();
+        services.AddScoped<IGetQuizTimerOrchestrator, GetQuizTimerOrchestrator>();
         services.AddScoped<IRegisterUserOrchestrator, RegisterUserOrchestrator>();
         services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
         services.AddScoped<IRefreshTokenOrchestrator, RefreshTokenOrchestrator>();
@@ -64,6 +66,7 @@ public static class InfrastructureRegistration
         services.AddScoped<IEventHandler<QuestionAnsweredEvent>, QuestionAnsweredEventHandler>();
         services.AddScoped<IEventHandler<QuestionCreatedEvent>, QuestionCreatedEventHandler>();
         services.AddScoped<IEventHandler<QuizSubmittedEvent>, QuizSubmittedEventHandler>();
+        services.AddScoped<IEventHandler<QuizTimerExpiredEvent>, QuizTimerExpiredEventHandler>();
         services.AddScoped<IEventHandler<QuizCreatedEvent>, QuizCreatedEventHandler>();
         services.AddScoped<IEventHandler<QuizDeletedEvent>, QuizDeletedEventHandler>();
         services.AddScoped<IEventHandler<QuizPublishedEvent>, QuizPublishedEventHandler>();

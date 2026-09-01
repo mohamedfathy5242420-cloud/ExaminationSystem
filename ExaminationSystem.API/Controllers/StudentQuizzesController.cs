@@ -3,6 +3,7 @@ using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion.Requests;
 using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizHistory;
 using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizResult;
+using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizTimer;
 using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz;
 using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz.Requests;
 using ExaminationSystem.Application.Features.Student.Quizzes.SubmitQuiz;
@@ -81,6 +82,34 @@ public class StudentQuizzesController : ControllerBase
         var result = await _mediator.Send(
             new GetQuizHistoryQuery(studentId, quizId, diplomaId),
             cancellationToken);
+
+        return Ok(result.Value);
+    }
+
+    [HttpGet("attempts/{attemptId:guid}/timer")]
+    public async Task<IActionResult> GetQuizTimer(
+        Guid attemptId,
+        CancellationToken cancellationToken)
+    {
+        var studentIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        var userType = User.FindFirst("user_type")?.Value;
+
+        if (!Guid.TryParse(studentIdClaim, out var studentId) || userType != "Student")
+        {
+            return Forbid();
+        }
+
+        var result = await _mediator.Send(
+            new GetQuizTimerQuery(studentId, attemptId),
+            cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return BadRequest(new
+            {
+                error = result.Error
+            });
+        }
 
         return Ok(result.Value);
     }
