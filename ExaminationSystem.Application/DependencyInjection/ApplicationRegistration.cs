@@ -13,6 +13,7 @@ using ExaminationSystem.Application.Features.Auth.Login;
 using ExaminationSystem.Application.Features.Auth.RefreshToken;
 using ExaminationSystem.Application.Features.Auth.ResetPassword;
 using ExaminationSystem.Application.Features.Auth.VerifyAccount;
+using ExaminationSystem.Application.Features.Student.Diplomas.EnrollInDiploma;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
 using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz;
 using ExaminationSystem.Application.Features.Student.Quizzes.SubmitQuiz;
@@ -33,6 +34,7 @@ public static class ApplicationRegistration
         services.AddScoped<IValidator<CreateQuizCommand>, CreateQuizCommandValidator>();
         services.AddScoped<IValidator<DeleteQuizCommand>, DeleteQuizCommandValidator>();
         services.AddScoped<IValidator<AnswerQuestionCommand>, AnswerQuestionCommandValidator>();
+        services.AddScoped<IValidator<EnrollInDiplomaCommand>, EnrollInDiplomaCommandValidator>();
         services.AddScoped<IValidator<PublishQuizCommand>, PublishQuizCommandValidator>();
         services.AddScoped<IValidator<UnpublishQuizCommand>, UnpublishQuizCommandValidator>();
         services.AddScoped<IValidator<UpdateQuizCommand>, UpdateQuizCommandValidator>();

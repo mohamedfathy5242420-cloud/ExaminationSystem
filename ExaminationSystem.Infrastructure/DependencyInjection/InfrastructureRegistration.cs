@@ -14,6 +14,10 @@ using ExaminationSystem.Application.Features.Auth.Register;
 using ExaminationSystem.Application.Features.Auth.RefreshToken;
 using ExaminationSystem.Application.Features.Auth.ResetPassword;
 using ExaminationSystem.Application.Features.Auth.VerifyAccount;
+using ExaminationSystem.Application.Features.Student.Dashboard.GetStudentDashboard;
+using ExaminationSystem.Application.Features.Student.Diplomas.BrowseDiplomas;
+using ExaminationSystem.Application.Features.Student.Diplomas.EnrollInDiploma;
+using ExaminationSystem.Application.Features.Student.Diplomas.GetDiplomaQuizzes;
 using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
 using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizHistory;
 using ExaminationSystem.Application.Features.Student.Quizzes.GetQuizResult;
@@ -40,15 +44,19 @@ public static class InfrastructureRegistration
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
         services.AddScoped<IAnswerQuestionOrchestrator, AnswerQuestionOrchestrator>();
+        services.AddScoped<IBrowseDiplomasOrchestrator, BrowseDiplomasOrchestrator>();
         services.AddScoped<ICreateDiplomaOrchestrator, CreateDiplomaOrchestrator>();
         services.AddScoped<ICreateQuestionOrchestrator, CreateQuestionOrchestrator>();
         services.AddScoped<ICreateQuizOrchestrator, CreateQuizOrchestrator>();
         services.AddScoped<IDeleteDiplomaOrchestrator, DeleteDiplomaOrchestrator>();
         services.AddScoped<IDeleteQuizOrchestrator, DeleteQuizOrchestrator>();
         services.AddScoped<IForgotPasswordOrchestrator, ForgotPasswordOrchestrator>();
+        services.AddScoped<IEnrollInDiplomaOrchestrator, EnrollInDiplomaOrchestrator>();
+        services.AddScoped<IGetDiplomaQuizzesForStudentOrchestrator, GetDiplomaQuizzesForStudentOrchestrator>();
         services.AddScoped<IGetQuizHistoryOrchestrator, GetQuizHistoryOrchestrator>();
         services.AddScoped<IGetQuizResultOrchestrator, GetQuizResultOrchestrator>();
         services.AddScoped<IGetQuizTimerOrchestrator, GetQuizTimerOrchestrator>();
+        services.AddScoped<IGetStudentDashboardOrchestrator, GetStudentDashboardOrchestrator>();
         services.AddScoped<IRegisterUserOrchestrator, RegisterUserOrchestrator>();
         services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
         services.AddScoped<IRefreshTokenOrchestrator, RefreshTokenOrchestrator>();
@@ -67,6 +75,7 @@ public static class InfrastructureRegistration
         services.AddScoped<IEventHandler<QuestionCreatedEvent>, QuestionCreatedEventHandler>();
         services.AddScoped<IEventHandler<QuizSubmittedEvent>, QuizSubmittedEventHandler>();
         services.AddScoped<IEventHandler<QuizTimerExpiredEvent>, QuizTimerExpiredEventHandler>();
+        services.AddScoped<IEventHandler<StudentEnrolledInDiplomaEvent>, StudentEnrolledInDiplomaEventHandler>();
         services.AddScoped<IEventHandler<QuizCreatedEvent>, QuizCreatedEventHandler>();
         services.AddScoped<IEventHandler<QuizDeletedEvent>, QuizDeletedEventHandler>();
         services.AddScoped<IEventHandler<QuizPublishedEvent>, QuizPublishedEventHandler>();
