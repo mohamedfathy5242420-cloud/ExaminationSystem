@@ -21,6 +21,10 @@ public class QuizConfiguration : IEntityTypeConfiguration<Domain.Entities.Quiz.Q
         builder.Property(x => x.MaxAttempts)
             .IsRequired();
 
+        builder.Property(x => x.Instructions)
+            .HasMaxLength(2000)
+            .IsRequired();
+
         builder.HasMany(x => x.Questions)
             .WithOne(x => x.Quiz)
             .HasForeignKey(x => x.QuizId)

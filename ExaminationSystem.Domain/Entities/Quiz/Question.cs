@@ -8,6 +8,8 @@ public class Question : BaseEntity
 
     public string Text { get; set; } = default!;
 
+    public string Explanation { get; set; } = default!;
+
     public int Order { get; set; }
 
     public int Score { get; set; }

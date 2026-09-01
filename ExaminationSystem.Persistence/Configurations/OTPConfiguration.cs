@@ -13,6 +13,11 @@ public class OTPConfiguration
             .HasMaxLength(10)
             .IsRequired();
 
+        builder.Property(x => x.Purpose)
+            .HasConversion<string>()
+            .HasMaxLength(50)
+            .IsRequired();
+
         builder.HasOne(x => x.User)
             .WithMany(x => x.OTPs)
             .HasForeignKey(x => x.UserId)
