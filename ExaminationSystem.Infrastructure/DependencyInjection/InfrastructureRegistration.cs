@@ -14,6 +14,9 @@ using ExaminationSystem.Application.Features.Auth.Register;
 using ExaminationSystem.Application.Features.Auth.RefreshToken;
 using ExaminationSystem.Application.Features.Auth.ResetPassword;
 using ExaminationSystem.Application.Features.Auth.VerifyAccount;
+using ExaminationSystem.Application.Features.Student.Quizzes.AnswerQuestion;
+using ExaminationSystem.Application.Features.Student.Quizzes.StartQuiz;
+using ExaminationSystem.Application.Features.Student.Quizzes.SubmitQuiz;
 using ExaminationSystem.Application.Interfaces.Orchestrators;
 using ExaminationSystem.Infrastructure.Email;
 using ExaminationSystem.Infrastructure.Events;
@@ -33,6 +36,7 @@ public static class InfrastructureRegistration
         services.Configure<SmtpOptions>(configuration.GetSection("Smtp"));
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
+        services.AddScoped<IAnswerQuestionOrchestrator, AnswerQuestionOrchestrator>();
         services.AddScoped<ICreateDiplomaOrchestrator, CreateDiplomaOrchestrator>();
         services.AddScoped<ICreateQuestionOrchestrator, CreateQuestionOrchestrator>();
         services.AddScoped<ICreateQuizOrchestrator, CreateQuizOrchestrator>();
@@ -43,6 +47,8 @@ public static class InfrastructureRegistration
         services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
         services.AddScoped<IRefreshTokenOrchestrator, RefreshTokenOrchestrator>();
         services.AddScoped<IResetPasswordOrchestrator, ResetPasswordOrchestrator>();
+        services.AddScoped<IStartQuizOrchestrator, StartQuizOrchestrator>();
+        services.AddScoped<ISubmitQuizOrchestrator, SubmitQuizOrchestrator>();
         services.AddScoped<IPublishQuizOrchestrator, PublishQuizOrchestrator>();
         services.AddScoped<IUpdateDiplomaOrchestrator, UpdateDiplomaOrchestrator>();
         services.AddScoped<IUpdateQuizOrchestrator, UpdateQuizOrchestrator>();
@@ -51,7 +57,9 @@ public static class InfrastructureRegistration
         services.AddScoped<JwtTokenBuilder>();
         services.AddScoped<IEventDispatcher, InProcessEventDispatcher>();
         services.AddScoped<IEventHandler<DiplomaCreatedEvent>, DiplomaCreatedEventHandler>();
+        services.AddScoped<IEventHandler<QuestionAnsweredEvent>, QuestionAnsweredEventHandler>();
         services.AddScoped<IEventHandler<QuestionCreatedEvent>, QuestionCreatedEventHandler>();
+        services.AddScoped<IEventHandler<QuizSubmittedEvent>, QuizSubmittedEventHandler>();
         services.AddScoped<IEventHandler<QuizCreatedEvent>, QuizCreatedEventHandler>();
         services.AddScoped<IEventHandler<QuizDeletedEvent>, QuizDeletedEventHandler>();
         services.AddScoped<IEventHandler<QuizPublishedEvent>, QuizPublishedEventHandler>();
@@ -62,6 +70,7 @@ public static class InfrastructureRegistration
         services.AddScoped<IEventHandler<UserRegisteredEvent>, UserRegisteredEventHandler>();
         services.AddScoped<IEventHandler<UserLoggedInEvent>, UserLoggedInEventHandler>();
         services.AddScoped<IEventHandler<RefreshTokenRotatedEvent>, RefreshTokenRotatedEventHandler>();
+        services.AddScoped<IEventHandler<QuizStartedEvent>, QuizStartedEventHandler>();
         services.AddScoped<IEventHandler<PasswordResetRequestedEvent>, PasswordResetRequestedEventHandler>();
         services.AddScoped<IEventHandler<PasswordResetCompletedEvent>, PasswordResetCompletedEventHandler>();
         services.AddScoped<IEventHandler<AccountVerifiedEvent>, AccountVerifiedEventHandler>();
